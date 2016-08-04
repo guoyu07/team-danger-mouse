@@ -20,4 +20,5 @@ The `full_stop` event stops synthesis.
 Commands are:
 
 - `play <int>`: play that note.
+- `sample <sample>`: play that sample. See SAMPLES.md for a list.
 - `sleep <float>`: sleep for that many seconds.
