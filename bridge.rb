@@ -5,7 +5,6 @@ require 'sonic_pi'
 def gencode(cmds)
   cs = ''
   for cmd in cmds
-    puts cmd
     if cs != ''
       cs += "\n"
     end
