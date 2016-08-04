@@ -21,9 +21,13 @@ def gencode(cmds)
     elsif cmd.has_key?('minor')
       c = 'play chord(' + cmd['minor'] + ', :minor)'
     elsif cmd.has_key?('synth')
-      c = 'with_synth ' + cmd['synth'] + " do\n" + tocmd(cmd['command']) + "\nend"
+      if cmd.has_key?('command')
+        c = 'with_synth ' + cmd['synth'] + " do\n" + gencode([cmd['command']]) + "\nend"
+      end
     elsif cmd.has_key?('effect')
-      c = 'with_fx ' + cmd['effect'] + " do\n" + tocmd(cmd['command']) + "\nend"
+      if cmd.has_key?('command')
+        c = 'with_fx ' + cmd['effect'] + " do\n" + gencode([cmd['command']]) + "\nend"
+      end
     elsif cmd.has_key?('progn')
       c = gencode(cmd['progn'])
     elsif cmd.has_key?('raw')
