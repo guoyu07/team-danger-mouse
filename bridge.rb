@@ -2,26 +2,45 @@ require 'json'
 require 'pusher-client'
 require 'sonic_pi'
 
-def docmds(app, cmds)
+def gencode(cmds)
+  cs = ''
   for cmd in cmds
-    bits = cmd.split
-    if bits[0] == "sleep"
-      duration = bits[1].to_f
-      puts 'Sleeping for: ' + bits[1]
-      sleep(duration)
-    elsif bits[0] == "major"
-      cmd = 'play chord(' + bits[1] + ', :major)'
-      puts 'Sending command: ' + cmd
-      app.run(cmd)
-    elsif bits[0] == "minor"
-      cmd = 'play chord(' + bits[1] + ', :minor)'
-      puts 'Sending command: ' + cmd
-      app.run(cmd)
-    else
-      puts 'Sending command: ' + cmd
-      app.run(cmd)
+    puts cmd
+    if cs != ''
+      cs += "\n"
     end
+
+    c = ""
+    if cmd.has_key?('sleep')
+      c = 'sleep ' + cmd['sleep'].to_s
+    elsif cmd.has_key?('play')
+      c = 'play ' + cmd['play']
+    elsif cmd.has_key?('sample')
+      c = 'sample ' + cmd['sample']
+    elsif cmd.has_key?('major')
+      c = 'play chord(' + cmd['major'] + ', :major)'
+    elsif cmd.has_key?('minor')
+      c = 'play chord(' + cmd['minor'] + ', :minor)'
+    elsif cmd.has_key?('synth')
+      c = 'with_synth ' + cmd['synth'] + " do\n" + tocmd(cmd['command']) + "\nend"
+    elsif cmd.has_key?('effect')
+      c = 'with_fx ' + cmd['effect'] + " do\n" + tocmd(cmd['command']) + "\nend"
+    elsif cmd.has_key?('progn')
+      c = gencode(cmd['progn'])
+    end
+
+    if cmd.has_key?('repeat')
+      if cmd['repeat'] == 'forever' then
+        c = "loop do\n" + c + "\nend"
+      else
+        c = cmd['repeat'].to_s + ".times do\n" + c + "\nend"
+      end
+    end
+
+    cs += c
   end
+
+  return cs
 end
 
 app = SonicPi.new
@@ -32,43 +51,19 @@ socket = PusherClient::Socket.new('cfbbdd53d88cd46a7deb')
 
 socket.subscribe('music')
 
-threads = []
-
 socket['music'].bind('do') do |data|
-  threads << Thread.new {
-    data = JSON.parse(data)
-    ntimes = 1
+  cmds = JSON.parse(data)
 
-    if data.has_key?('repeat')
-      if data['repeat'] == 'forever' then
-        ntimes = -1
-      else
-        ntimes = data['repeat'].to_i
-      end
-    end
-
-    if data.has_key?('commands')
-      cmds = data['commands'].split(',')
-      if ntimes == -1
-        while true
-          docmds(app, cmds)
-        end
-      else
-        ntimes.times do
-          docmds(app, cmds)
-        end
-      end
-    end
-  }
+  if cmds.is_a?(Array)
+    c = gencode(cmds)
+    puts 'Sending code: `' + c + '`'
+    app.run(c)
+  end
 end
 
 socket['music'].bind('full_stop') do |data|
   puts "Stopping"
-  for tid in threads
-    Thread.kill(tid)
-  end
   app.stop()
-  threads = []
 end
 
 socket.connect
