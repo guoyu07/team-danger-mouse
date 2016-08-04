@@ -21,8 +21,8 @@ Commands are:
 - `{'sleep': <float>}`: sleep for that many seconds.
 - `{'major': '<note>'}`: play that major chord.
 - `{'minor': '<note>'}`: play that minor chord.
-- `{'synth': '<synth>, 'commands': [<command>]}`: run that command with those effects. See the cheatsheets.
-- `{'effect': '<effect>', 'commands': [<command>]}`: run that command with that effect. See the cheatsheets.
+- `{'synth': '<synth>, 'command': <command>}`: run that command with those effects. See the cheatsheets.
+- `{'effect': '<effect>', 'command': <command>}`: run that command with that effect. See the cheatsheets.
 - `{'progn': [<command>]}`: run the commands in sequence.
 - `{'raw': '<code>'}`: execute the given code verbatim in the Sonic Pi process.
 
