@@ -82,9 +82,7 @@
 
     var pusher = new Pusher('cfbbdd53d88cd46a7deb', {
       encrypted: true,
-      // authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
-      authEndpoint: 'http://127.0.0.1:5000/dangermouse/'
-
+      authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
     })
 
     var channel = pusher.subscribe('presence-music')
