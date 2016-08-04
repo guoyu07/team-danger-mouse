@@ -16,6 +16,31 @@
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
     <script type="text/javascript">
 
+    var pusher = new Pusher('cfbbdd53d88cd46a7deb', {
+      encrypted: true,
+      authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
+    })
+
+    var channel = pusher.subscribe('presence-music')
+    // TODO - auth & trigger client events on press
+
+    ;[].forEach.call(document.getElementsByTagName('li'), function(el){
+      el.addEventListener('click', function(e){
+        e.preventDefault()
+
+        channel.trigger('client-do', [
+          {play: el.dataset.key}
+        ])
+
+        console.log(el.dataset.key)
+      }, false)
+    })
+    </script>
+
+
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+    <script type="text/javascript">
+
     var pusher = new Pusher('5fa0f9d3c2fc3c5ea393', {
       cluster: 'eu',
       encrypted: true
@@ -36,7 +61,7 @@
     <script type="text/javascript">
       var w = window.innerWidth, h = window.innerHeight;
 
-      var nodes = d3.range(250).map(function(){
+      var nodes = d3.range(150).map(function(){
         return {
           r: Math.random() * 30 + 5,
         }
@@ -83,7 +108,7 @@
           .append('circle')
           .attr('r', function(e){ return e.r})
           .on('mouseover', function(d){
-            console.log(d)
+            // console.log(d)
             d.remove = true
 
             simulation.alpha(0.5)
@@ -92,6 +117,17 @@
             circle.attr('fill', function(d){
               return d.remove ? 'rgba(0,0,0,0.11)' : '#000'
             })
+
+            console.log(~~d.r + 30)
+            channel.trigger('client-do', [
+              {
+                synth: ':pretty_bell',
+                command:{
+                  play: ~~d.r + 50
+                }}
+            ])
+
+            // {'synth': '<synth>, 'command': <command>}
 
             simulation.force("collide",collide.radius(function(d){
               if(d.remove) return 100
@@ -108,6 +144,9 @@
       })
 
     </script>
+
+
+
 
   </body>
 </html>
