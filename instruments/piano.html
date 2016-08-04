@@ -94,9 +94,9 @@
       el.addEventListener('click', function(e){
         e.preventDefault()
 
-        channel.trigger('client-do', {
-          commands: 'play ' + el.dataset.key
-        })
+        channel.trigger('client-do', [
+          {play: el.dataset.key}
+        ])
 
         console.log(el.dataset.key)
       }, false)
