@@ -26,6 +26,8 @@ def gencode(cmds)
       c = 'with_fx ' + cmd['effect'] + " do\n" + tocmd(cmd['command']) + "\nend"
     elsif cmd.has_key?('progn')
       c = gencode(cmd['progn'])
+    elsif cmd.has_key?('raw')
+      c = cmd['raw']
     end
 
     if cmd.has_key?('repeat')

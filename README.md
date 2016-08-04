@@ -24,5 +24,6 @@ Commands are:
 - `{'synth': '<synth>, 'commands': [<command>]}`: run that command with those effects.
 - `{'effect': '<effect>', 'commands': [<command>]}`: run that command with that effect.
 - `{'progn': [<command>]}`: run the commands in sequence.
+- `{'raw': '<code>'}`: execute the given code verbatim in the Sonic Pi process.
 
 Any command can be given a `repeat` parameter, which can be `"forever"` or an int.
