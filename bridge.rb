@@ -21,9 +21,9 @@ def gencode(cmds, amp='')
     elsif cmd.has_key?('sample')
       c = 'sample ' + cmd['sample'] + amp
     elsif cmd.has_key?('major')
-      c = 'play chord(' + cmd['major'] + ', :major)' + amp
+      c = 'play chord(' + cmd['major'].to_s + ', :major)' + amp
     elsif cmd.has_key?('minor')
-      c = 'play chord(' + cmd['minor'] + ', :minor)' + amp
+      c = 'play chord(' + cmd['minor'].to_s + ', :minor)' + amp
     elsif cmd.has_key?('synth')
       if cmd.has_key?('command')
         c = 'with_synth ' + cmd['synth'] + " do\n" + gencode([cmd['command']], amp) + "\nend"
