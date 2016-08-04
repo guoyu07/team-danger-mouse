@@ -10,7 +10,7 @@ def gencode(cmds, amp='')
     end
 
     if cmd.has_key?('amp')
-      amp = ', amp: ' + cmd['amp']
+      amp = ', amp: ' + cmd['amp'].to_s
     end
 
     c = ""
