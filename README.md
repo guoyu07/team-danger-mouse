@@ -11,8 +11,8 @@
 - Start the sonic-pi server (on OSX run `ruby /Applications/Sonic Pi.app/app/server/bin/sonic-pi-server.rb`)
 - Start the bridge: `ruby bridge.rb`
 
-Send `do` events to app `cfbbdd53d88cd46a7deb` in MT1 in the channel `music` where the data is a
-list of commands. The `full_stop` event stops synthesis.
+Send `client-do` events to app `cfbbdd53d88cd46a7deb` in MT1 in the channel `presence-music` where the data
+is a list of commands. The `client-full_stop` event stops synthesis.
 
 Commands are:
 
@@ -21,9 +21,11 @@ Commands are:
 - `{'sleep': <float>}`: sleep for that many seconds.
 - `{'major': '<note>'}`: play that major chord.
 - `{'minor': '<note>'}`: play that minor chord.
-- `{'synth': '<synth>, 'commands': [<command>]}`: run that command with those effects. See the cheatsheets.
-- `{'effect': '<effect>', 'commands': [<command>]}`: run that command with that effect. See the cheatsheets.
+- `{'synth': '<synth>, 'command': <command>}`: run that command with those effects. See the cheatsheets.
+- `{'effect': '<effect>', 'command': <command>}`: run that command with that effect. See the cheatsheets.
 - `{'progn': [<command>]}`: run the commands in sequence.
 - `{'raw': '<code>'}`: execute the given code verbatim in the Sonic Pi process.
 
-Any command can be given a `repeat` parameter, which can be `"forever"` or an int.
+Any command can be given a `repeat` parameter, which can be `"forever"` or an int. All commands other than
+`sleep` and `raw` can be given an `amp` parameter: 0 is silent, 1 is normal volume; `synth`, `effect`, and
+`progn` pass on the `amp` to its subcommands (although if they have an `amp` of their own it takes precedence).
