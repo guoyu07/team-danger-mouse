@@ -23,6 +23,8 @@ The `full_stop` event stops synthesis.
 
 Commands are:
 
-- `play <int>`: play that note.
+- `play <note>`: play that note, notes are MIDI note numbers or names (`:e3`).
 - `sample <sample>`: play that sample. See SAMPLES.md for a list.
 - `sleep <float>`: sleep for that many seconds.
+- `major <note>`: play that major chord.
+- `minor <note>`: play that minor chord.

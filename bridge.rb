@@ -9,6 +9,14 @@ def docmds(app, cmds)
       duration = bits[1].to_f
       puts 'Sleeping for: ' + bits[1]
       sleep(duration)
+    elsif bits[0] == "major"
+      cmd = 'play chord(' + bits[1] + ', :major)'
+      puts 'Sending command: ' + cmd
+      app.run(cmd)
+    elsif bits[0] == "minor"
+      cmd = 'play chord(' + bits[1] + ', :minor)'
+      puts 'Sending command: ' + cmd
+      app.run(cmd)
     else
       puts 'Sending command: ' + cmd
       app.run(cmd)
