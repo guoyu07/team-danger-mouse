@@ -63,33 +63,41 @@
   <body>
 
     <ul class="set">
-      <li class="white b" data-key="b"></li>
-      <li class="black as" data-key="as"></li>
-      <li class="white a" data-key="a"></li>
-      <li class="black gs" data-key="gs"></li>
-      <li class="white g" data-key="g"></li>
-      <li class="black fs" data-key="fs"></li>
-      <li class="white f" data-key="f"></li>
-      <li class="white e" data-key="e"></li>
-      <li class="black ds" data-key="ds"></li>
-      <li class="white d" data-key="d"></li>
-      <li class="black cs" data-key="cs"></li>
-      <li class="white c" data-key="c"></li>
+      <li class="white b" data-key=":b"></li>
+      <li class="black as" data-key=":as"></li>
+      <li class="white a" data-key=":a"></li>
+      <li class="black gs" data-key=":gs"></li>
+      <li class="white g" data-key=":g"></li>
+      <li class="black fs" data-key=":fs"></li>
+      <li class="white f" data-key=":f"></li>
+      <li class="white e" data-key=":e"></li>
+      <li class="black ds" data-key=":ds"></li>
+      <li class="white d" data-key=":d"></li>
+      <li class="black cs" data-key=":cs"></li>
+      <li class="white c" data-key=":c"></li>
     </ul>
 
     <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
     <script type="text/javascript">
 
-    var pusher = new Pusher('5fa0f9d3c2fc3c5ea393', {
-      cluster: 'eu',
-      encrypted: true
+    var pusher = new Pusher('cfbbdd53d88cd46a7deb', {
+      encrypted: true,
+      // authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
+      authEndpoint: 'http://127.0.0.1:5000/dangermouse/'
+
     })
 
+    var channel = pusher.subscribe('presence-music')
     // TODO - auth & trigger client events on press
 
     ;[].forEach.call(document.getElementsByTagName('li'), function(el){
       el.addEventListener('click', function(e){
         e.preventDefault()
+
+        channel.trigger('client-do', {
+          commands: 'play ' + el.dataset.key
+        })
+
         console.log(el.dataset.key)
       }, false)
     })
