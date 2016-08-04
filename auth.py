@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import json
 import pusher
 
@@ -12,7 +12,7 @@ pusher_client = pusher.Pusher(
 
 @app.route("/dangermouse/", methods=["POST"])
 def pusher_auth():
-  auth = pusher.authenticate(
+  auth = pusher_client.authenticate(
     channel=request.form['channel_name'],
     socket_id=request.form['socket_id']
   )
