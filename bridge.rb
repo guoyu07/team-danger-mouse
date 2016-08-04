@@ -28,13 +28,15 @@ app = SonicPi.new
 
 app.test_connection!
 
-socket = PusherClient::Socket.new('cfbbdd53d88cd46a7deb')
+socket = PusherClient::Socket.new('cfbbdd53d88cd46a7deb',{
+  :secret => 'b4430e80c82bc1b8b729'
+})
 
-socket.subscribe('music')
+socket.subscribe('presence-music', :user_id => 'the.server', :user_data => {:foo => 'bar'})
 
 threads = []
 
-socket['music'].bind('do') do |data|
+socket['presence-music'].bind('client-do') do |data|
   threads << Thread.new {
     data = JSON.parse(data)
     ntimes = 1
@@ -62,7 +64,7 @@ socket['music'].bind('do') do |data|
   }
 end
 
-socket['music'].bind('full_stop') do |data|
+socket['presence-music'].bind('client-full_stop') do |data|
   puts "Stopping"
   for tid in threads
     Thread.kill(tid)
