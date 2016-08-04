@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bubble</title>
+    <style media="screen">
+    li{padding:1em;
+    cursor: pointer;background: #ccc;margin:1em}
+    </style>
+  </head>
+  <body>
+
+    <ul>
+      <li data-command=":drum_heavy_kick">:drum_heavy_kick</li>
+      <li data-command=":drum_tom_mid_soft">:drum_tom_mid_soft</li>
+      <li data-command=":drum_tom_mid_hard">:drum_tom_mid_hard</li>
+      <li data-command=":drum_tom_lo_soft">:drum_tom_lo_soft</li>
+      <li data-command=":drum_tom_lo_hard">:drum_tom_lo_hard</li>
+      <li data-command=":drum_tom_hi_soft">:drum_tom_hi_soft</li>
+      <li data-command=":drum_tom_hi_hard">:drum_tom_hi_hard</li>
+      <li data-command=":drum_splash_soft">:drum_splash_soft</li>
+      <li data-command=":drum_splash_hard">:drum_splash_hard</li>
+      <li data-command=":drum_snare_soft">:drum_snare_soft</li>
+      <li data-command=":drum_snare_hard">:drum_snare_hard</li>
+      <li data-command=":drum_cymbal_soft">:drum_cymbal_soft</li>
+      <li data-command=":drum_cymbal_hard">:drum_cymbal_hard</li>
+      <li data-command=":drum_cymbal_open">:drum_cymbal_open</li>
+      <li data-command=":drum_cymbal_closed">:drum_cymbal_closed</li>
+      <li data-command=":drum_cymbal_pedal">:drum_cymbal_pedal</li>
+      <li data-command=":drum_bass_soft">:drum_bass_soft</li>
+      <li data-command=":drum_bass_hard">:drum_bass_hard</li>
+
+
+    </ul>
+
+    <img src="drums.jpeg" alt="" usemap="#Map" />
+    <map name="Map" id="Map">
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="50,224,97,193,154,205,176,266,146,318,73,319,40,282,36,244" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="68,83,104,28,160,24,198,55,208,113,180,159,118,167,62,121" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="434,52,495,3,564,32,587,85,578,133,528,166,434,118" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="151,195,173,171,234,162,263,224,229,279,185,261,150,196" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="221,68,268,46,309,80,314,131,270,159,222,142,213,93" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="333,88,361,50,412,50,425,66,430,135,388,162,341,132" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="446,195,480,167,554,167,587,212,573,294,493,315,433,265,436,226" />
+        <area alt="" title="" data-command=":drum_bass_hard" shape="poly" coords="287,184,364,178,377,277,330,318,289,308,281,252" />
+    </map>
+
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+    <script type="text/javascript">
+
+    var pusher = new Pusher('cfbbdd53d88cd46a7deb', {
+      encrypted: true,
+      authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
+    })
+
+    var channel = pusher.subscribe('presence-music')
+    // TODO - auth & trigger client events on press
+
+    ;[].forEach.call(document.getElementsByTagName('li'), function(el){
+      el.addEventListener('click', function(e){
+        e.preventDefault()
+
+        channel.trigger('client-do', [
+          {sample: el.dataset.command}
+        ])
+
+        console.log(el.dataset.command)
+      }, false)
+    })
+
+
+    ;[].forEach.call(document.getElementsByTagName('area'), function(el){
+      el.addEventListener('click', function(e){
+        e.preventDefault()
+
+        channel.trigger('client-do', [
+          {sample: el.dataset.command}
+        ])
+
+        console.log(el.dataset.command)
+      }, false)
+    })
+
+
+    </script>
+  </body>
+</html>
