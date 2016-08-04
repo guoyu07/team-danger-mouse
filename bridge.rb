@@ -60,12 +60,12 @@ socket = PusherClient::Socket.new('cfbbdd53d88cd46a7deb',{
   :secret => 'b4430e80c82bc1b8b729'
 })
 
-socket.subscribe('presence-music2', :user_id => 'the.server', :user_data => {:foo => 'bar'})
+socket.subscribe('presence-music', :user_id => 'the.server', :user_data => {:foo => 'bar'})
 
 
 threads = []
 
-socket['presence-music2'].bind('client-do') do |data|
+socket['presence-music'].bind('client-do') do |data|
   cmds = JSON.parse(data)
 
   if cmds.is_a?(Array)
@@ -75,7 +75,7 @@ socket['presence-music2'].bind('client-do') do |data|
   end
 end
 
-socket['presence-music2'].bind('client-full_stop') do |data|
+socket['presence-music'].bind('client-full_stop') do |data|
   puts "Stopping"
   app.stop()
 end
