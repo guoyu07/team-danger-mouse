@@ -26,4 +26,6 @@ Commands are:
 - `{'progn': [<command>]}`: run the commands in sequence.
 - `{'raw': '<code>'}`: execute the given code verbatim in the Sonic Pi process.
 
-Any command can be given a `repeat` parameter, which can be `"forever"` or an int.
+Any command can be given a `repeat` parameter, which can be `"forever"` or an int. All commands other than
+`sleep` and `raw` can be given an `amp` parameter: 0 is silent, 1 is normal volume; `synth`, `effect`, and
+`progn` pass on the `amp` to its subcommands (although if they have an `amp` of their own it takes precedence).

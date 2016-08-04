@@ -2,34 +2,38 @@ require 'json'
 require 'pusher-client'
 require 'sonic_pi'
 
-def gencode(cmds)
+def gencode(cmds, amp='')
   cs = ''
   for cmd in cmds
     if cs != ''
       cs += "\n"
     end
 
+    if cmd.has_key?('amp')
+      amp = ', amp: ' + cmd['amp']
+    end
+
     c = ""
     if cmd.has_key?('sleep')
       c = 'sleep ' + cmd['sleep'].to_s
     elsif cmd.has_key?('play')
-      c = 'play ' + cmd['play']
+      c = 'play ' + cmd['play'].to_s + amp
     elsif cmd.has_key?('sample')
-      c = 'sample ' + cmd['sample']
+      c = 'sample ' + cmd['sample'] + amp
     elsif cmd.has_key?('major')
-      c = 'play chord(' + cmd['major'] + ', :major)'
+      c = 'play chord(' + cmd['major'] + ', :major)' + amp
     elsif cmd.has_key?('minor')
-      c = 'play chord(' + cmd['minor'] + ', :minor)'
+      c = 'play chord(' + cmd['minor'] + ', :minor)' + amp
     elsif cmd.has_key?('synth')
       if cmd.has_key?('command')
-        c = 'with_synth ' + cmd['synth'] + " do\n" + gencode([cmd['command']]) + "\nend"
+        c = 'with_synth ' + cmd['synth'] + " do\n" + gencode([cmd['command']], amp) + "\nend"
       end
     elsif cmd.has_key?('effect')
       if cmd.has_key?('command')
-        c = 'with_fx ' + cmd['effect'] + " do\n" + gencode([cmd['command']]) + "\nend"
+        c = 'with_fx ' + cmd['effect'] + " do\n" + gencode([cmd['command']], amp) + "\nend"
       end
     elsif cmd.has_key?('progn')
-      c = gencode(cmd['progn'])
+      c = gencode(cmd['progn'], amp)
     elsif cmd.has_key?('raw')
       c = cmd['raw']
     end
@@ -56,12 +60,12 @@ socket = PusherClient::Socket.new('cfbbdd53d88cd46a7deb',{
   :secret => 'b4430e80c82bc1b8b729'
 })
 
-socket.subscribe('presence-music', :user_id => 'the.server', :user_data => {:foo => 'bar'})
+socket.subscribe('presence-music2', :user_id => 'the.server', :user_data => {:foo => 'bar'})
 
 
 threads = []
 
-socket['presence-music'].bind('client-do') do |data|
+socket['presence-music2'].bind('client-do') do |data|
   cmds = JSON.parse(data)
 
   if cmds.is_a?(Array)
@@ -71,7 +75,7 @@ socket['presence-music'].bind('client-do') do |data|
   end
 end
 
-socket['presence-music'].bind('client-full_stop') do |data|
+socket['presence-music2'].bind('client-full_stop') do |data|
   puts "Stopping"
   app.stop()
 end
