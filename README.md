@@ -1,5 +1,9 @@
 # team-danger-mouse
 
+## auth
+
+- Use https://www.barrucadu.co.uk/dangermouse/ as the auth end point
+
 ## bridge
 
 - Install some gems: `gem install pusher-client sonic-pi-cli`
