@@ -36,17 +36,25 @@ var pusher = new Pusher('cfbbdd53d88cd46a7deb', {
 
 var notes = [57, 60, 62, 64, 67, 69, 72, 74, 76, 79, 81, 84, 86, 88, 91, 93, 96, 98, 100, 103, 105, 108]
 
+var keys = (
+            'a4 as4 b4 c4 cs4 d4 ds4 e4 f4 fs4 g4 gs4 ' +
+           'a5 as5 b5 c5 cs5 d5 ds5 e5 f5 fs5 g5 gs5'
+         )
+           .split(' ').map(function(d) {return ':' + d})
+
+console.log(keys.length)
 console.log(notes)
 
 var channel = pusher.subscribe('presence-music')
 
 ;[].forEach.call(document.querySelectorAll('button'), function(b, i){
-  console.log(b, i)
-  b.innerText = (i+1).toString(32).toUpperCase()
+  // console.log(b, i)
+  b.innerText = keys[i] //(i+1).toString(32).toUpperCase()
+
   b.addEventListener('click', function(){
 
     channel.trigger('client-do', [
-      {play: notes[i]}
+      {play: keys[i]}
     ])
   })
 
