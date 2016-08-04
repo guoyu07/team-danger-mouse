@@ -14,6 +14,17 @@ def docmd(app, cmd)
   end
 end
 
+def unquote(s)
+  if s.chars.first == '"'
+    s = s[1..-1]
+  end
+  if s.chars.last == '"'
+    s = s[0..-2]
+  end
+
+  return s
+end
+
 app = SonicPi.new
 
 app.test_connection!
@@ -23,11 +34,11 @@ socket = PusherClient::Socket.new('cfbbdd53d88cd46a7deb')
 socket.subscribe('music')
 
 socket['music'].bind('command') do |data|
-  docmd(app, data)
+  docmd(app, unquote(data))
 end
 
 socket['music'].bind('commands') do |data|
-  for cmd in data.split(',')
+  for cmd in unquote(data).split(',')
     docmd(app,cmd)
   end
 end
