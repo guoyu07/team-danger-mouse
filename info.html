@@ -1,0 +1,226 @@
+<html>
+  <head>
+    <title>Pusher -&gt; Sonic Pi Bridge</title>
+
+    <meta charset="utf-8">
+
+    <style type="text/css">
+body {
+  background-color: #ddd;
+  margin: 0;
+  padding: 0;
+  font-family: Verdana, sans-serif;
+}
+#container {
+  width: 70%;
+  margin: 0 auto;
+  padding: 16px 25px;
+  background-color: #fff;
+}
+header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+h1 {
+  font-size: 3em;
+}
+header img {
+  max-width: 512px;
+  max-height: 64px;
+  object-fit: contain;
+}
+#examples {
+  display: flex;
+  flex-flow: row wrap;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 16px;
+}
+section {
+  width: 50%;
+  padding: 8px 15px 0 15px;;
+  box-sizing: border-box;
+}
+section h2 {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+}
+section.wide {
+  width: 100%;
+  flex: 2;
+}
+button {
+  font-size: 1.5em;
+  float: right;
+}
+.notice {
+  text-align: center;
+  font-weight: bold;
+}
+pre {
+  border: 1px solid #999;
+}
+code {
+  font-size: 0.8em;
+}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/themes/prism.min.css" type="text/css">
+  </head>
+
+  <body class="language-javascript">
+    <div id="container">
+      <header>
+        <img src="https://worldvectorlogo.com/logos/pusher.svg" style="float:left">
+        <img src="http://sonic-pi.net/images/logo.png" style="float:right">
+        <h1>Pusher -&gt; Sonic Pi Bridge</h1>
+      </header>
+
+      <p class="notice">Click any code block to edit it.</p>
+
+      <div id="examples">
+        <section>
+          <h2>Frère Jacques</h2>
+          <button data-key="frere-jacques">Play!</button>
+          <pre><code id="frere-jacques">{ "progn": [ {"play": 60}
+           , {"sleep": 0.5}
+           , {"play": 62}
+           , {"sleep": 0.5}
+           , {"play": 64}
+           , {"sleep": 0.5}
+           , {"play": 60}
+           , {"sleep": 0.5}
+           ]
+, "repeat": 2
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>...with note names</h2>
+          <button data-key="frere-jacques-names">Play!</button>
+          <pre><code id="frere-jacques-names">{ "progn": [ {"play": ":c4"}
+           , {"sleep": 0.5}
+           , {"play": ":d4"}
+           , {"sleep": 0.5}
+           , {"play": ":e4"}
+           , {"sleep": 0.5}
+           , {"play": ":c4"}
+           , {"sleep": 0.5}
+           ]
+, "repeat": 2
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>...with a different synth</h2>
+          <button data-key="frere-jacques-synth">Play!</button>
+          <pre><code id="frere-jacques-synth">{ "synth": ":fm"
+, "command":
+    { "progn": [ {"play": ":c4"}
+               , {"sleep": 0.5}
+               , {"play": ":d4"}
+               , {"sleep": 0.5}
+               , {"play": ":e4"}
+               , {"sleep": 0.5}
+               , {"play": ":c4"}
+               , {"sleep": 0.5}
+               ]
+    , "repeat": 2
+    }
+}
+ </code></pre>
+        </section>
+
+        <section>
+          <h2>...and effects!</h2>
+          <button data-key="frere-jacques-effects">Play!</button>
+          <pre><code id="frere-jacques-effects">{ "effect": ":tanh"
+, "command":
+    { "synth": ":fm"
+    , "command":
+        { "progn": [ {"play": ":c4"}
+                   , {"sleep": 0.5}
+                   , {"play": ":d4"}
+                   , {"sleep": 0.5}
+                   , {"play": ":e4"}
+                   , {"sleep": 0.5}
+                   , {"play": ":c4"}
+                   , {"sleep": 0.5}
+                   ]
+        , "repeat": 2
+} } }</code></pre>
+        </section>
+
+        <section class="wide">
+          <h2>Raw Sonic Pi code</h2>
+          <button data-key="raw">Play!</button>
+          <pre><code id="raw">{ "progn":
+    [ {"raw": "r = [0.5, 1.0/3, 3.0/5].choose"}
+    , { "progn": [ {"raw": "sample :ambi_choir, rate: r, pan: rrand(-1, 1)"}
+                 , {"sleep": 0.5}
+                 ]
+      , "repeat": 8
+      }
+    ]
+, "repeat": 5
+}</code></pre>
+        </section>
+      </div>
+
+      <h2>Commands</h2>
+
+      <p>Every command takes an optional <code>repeat</code> parameter, which can be <code>&quot;forever&quot;</code> or an integer; and an <code>amp</code> parameter, which is a float specifying the volume, where 0 is silence and 1 is normal volume.</p>
+
+      <dl>
+      <dt><code>{play: &lt;note&gt;}</code></dt>
+      <dd>Play a note, which can either be a MIDI note number, or a symbolic name.</dd>
+
+      <dt><code>{sample: &lt;name&gt;}</code></dt>
+      <dd>Play a sample.</dd>
+
+      <dt><code>{sleep: &lt;num&gt;}</code></dt>
+      <dd>Sleep for a number of seconds.</dd>
+
+      <dt><code>{major: &lt;note&gt;}</code></dt>
+      <dd>Play a major note.</dd>
+
+      <dt><code>{minor: &lt;note&gt;}</code></dt>
+      <dd>Play a minor note.</dd>
+
+      <dt><code>{synth: &lt;note&gt;, command: &lt;command&gt;}</code></dt>
+      <dd>Run a command with a given synth. The <code>amp</code> is propagated to the subcommands (but their own <code>amp</code> takes precedence).</dd>
+
+      <dt><code>{effect: &lt;note&gt;, command: &lt;command&gt;}</code></dt>
+      <dd>Run a command with a given effect. The <code>amp</code> is propagated, as in <code>synth</code>.</dd>
+
+      <dt><code>{progn: &lt;commands&gt;}</code></dt>
+      <dd>Run a list of commands in order. The <code>amp</code> is propagated, as in <code>synth</code>.</dd>
+
+      <dt><code>{raw: &lt;code&gt;}</code></dt>
+      <dd>Execute code verbatim in the Sonic Pi process. The <code>amp</code> parameter is ignored.</dd>
+      <dl>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js"></script>
+    <script src="https://js.pusher.com/3.2/pusher.min.js"></script>
+    <script type="text/javascript">
+var pusher = new Pusher('cfbbdd53d88cd46a7deb', {
+  encrypted: true,
+  authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
+})
+
+var channel = pusher.subscribe('presence-music')
+
+;[].forEach.call(document.querySelectorAll('button'), function(button){
+  button.addEventListener('click', function(){
+    channel.trigger('client-do', [JSON.parse(document.getElementById(button.dataset.key).textContent)])
+  }, false)
+});
+
+;[].forEach.call(document.querySelectorAll('pre'), function(code){
+  code.contentEditable = true;
+});
+    </script>
+  </body>
+</html>
