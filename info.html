@@ -50,7 +50,10 @@ section.wide {
   width: 100%;
   flex: 2;
 }
-button {
+p button {
+  font-size: 1em;
+}
+section button {
   font-size: 1.5em;
   float: right;
 }
@@ -78,6 +81,7 @@ code {
       </header>
 
       <p class="notice">Click any code block to edit it.</p>
+      <p class="notice"><button data-key="full_stop">Click to STOP EVERYTHING</button></p>
 
       <div id="examples">
         <section>
@@ -214,7 +218,11 @@ var channel = pusher.subscribe('presence-music')
 
 ;[].forEach.call(document.querySelectorAll('button'), function(button){
   button.addEventListener('click', function(){
-    channel.trigger('client-do', [JSON.parse(document.getElementById(button.dataset.key).textContent)])
+    if (button.dataset.key == "full_stop") {
+      channel.trigger('client-full_stop', [])
+    } else {
+      channel.trigger('client-do', [JSON.parse(document.getElementById(button.dataset.key).textContent)])
+    }
   }, false)
 });
 
