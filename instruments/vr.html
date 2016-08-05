@@ -31,6 +31,8 @@
       <a-sphere data-key="f4" position=" 25  0  -25" radius="1.25" color="#ffffcc"></a-sphere>
       <a-sphere data-key="g4" position=" 25 -10 -25" radius="1.25" color="#ffffcc"></a-sphere>
 
+      <a-box position="0 50 10" depth="5" height="5" width="5" material="opacity:0"></a-box>
+
       <!-- https://www.flickr.com/photos/vitroids/3033329561/in/photolist-Gj57k-5C3Bcx-jk1Byv-36uUj9-52ftoS-7rStBS -->
       <a-sky src="vrsky.jpg" rotation="0 -130 0"></a-sky>
     </a-scene>
@@ -44,10 +46,59 @@
 
       var channel = pusher.subscribe('presence-music')
 
+      var synths = [
+        ":dull_bell",
+        ":pretty_bell",
+        ":beep",
+        ":sine",
+        ":saw",
+        ":pulse",
+        ":subpulse",
+        ":square",
+        ":tri",
+        ":dsaw",
+        ":dpulse",
+        ":dtri",
+        ":fm",
+        ":mod_fm",
+        ":mod_saw",
+        ":mod_dsaw",
+        ":mod_sine",
+        ":mod_beep",
+        ":mod_tri",
+        ":mod_pulse",
+        ":tb303",
+        ":supersaw",
+        ":hoover",
+        ":prophet",
+        ":zawa",
+        ":growl",
+        ":hollow",
+        ":mono_player",
+        ":stereo_player",
+        ":blade",
+        ":piano",
+        ":pluck",
+        ":noise",
+        ":pnoise",
+        ":bnoise",
+        ":gnoise",
+        ":cnoise"
+      ]
+
+      var current_synth = 1
+
       ;[].forEach.call(document.querySelectorAll('a-sphere'), function(sphere){
         sphere.addEventListener('click', function(){
           console.log("click", sphere, sphere.dataset.key)
-          channel.trigger('client-do', [{play: ':' + sphere.dataset.key}])
+          channel.trigger('client-do', [{synth: synths[current_synth], command: {play: ':' + sphere.dataset.key}}])
+        }, false)
+      });
+
+      ;[].forEach.call(document.querySelectorAll('a-box'), function(box){
+        box.addEventListener('click', function(){
+          current_synth = Math.floor(Math.random() * synths.length)
+          console.log("click", box, synths[current_synth])
         }, false)
       });
     </script>
