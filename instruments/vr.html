@@ -30,7 +30,8 @@
       <a-sphere data-key="g4" position=" 25  0  -55" radius="1" color="#ffffcc"></a-sphere>
       <a-sphere data-key="f4" position=" 25 -10 -55" radius="1" color="#ffffcc"></a-sphere>
 
-      <a-box position="0 50 10" depth="5" height="5" width="5" material="opacity:0"></a-box>
+      <a-box data-key="synth" position="0 50 10" depth="5" height="5" width="5" material="opacity:0"></a-box>
+      <a-box data-key="drums" position="0 -50 10" depth="5" height="5" width="5" material="opacity:0"></a-box>
 
       <!-- https://www.flickr.com/photos/vitroids/3033329561/in/photolist-Gj57k-5C3Bcx-jk1Byv-36uUj9-52ftoS-7rStBS -->
       <a-sky src="vrsky.jpg" rotation="0 -130 0"></a-sky>
@@ -43,7 +44,7 @@
         authEndpoint: 'https://www.barrucadu.co.uk/dangermouse/'
       })
 
-      var channel = pusher.subscribe('presence-music')
+      var channel = pusher.subscribe('presence-music2')
 
       var synths = [
         ":dull_bell",
@@ -86,6 +87,7 @@
       ]
 
       var current_synth = 1
+      var drums = false
 
       ;[].forEach.call(document.querySelectorAll('a-sphere'), function(sphere){
         sphere.addEventListener('click', function(){
@@ -96,8 +98,17 @@
 
       ;[].forEach.call(document.querySelectorAll('a-box'), function(box){
         box.addEventListener('click', function(){
-          current_synth = Math.floor(Math.random() * synths.length)
-          console.log("click", box, synths[current_synth])
+          console.log("click", box)
+          if (box.dataset.key == "synth") {
+            current_synth = Math.floor(Math.random() * synths.length)
+          } else if (box.dataset.key == "drums") {
+            drums = ! drums
+            if (drums) {
+              channel.trigger('client-do', [{progn: [{sample: ":loop_amen"}, {sleep: 1.753}], repeat: "forever"}])
+            } else {
+              channel.trigger('client-full_stop', [])
+            }
+          }
         }, false)
       });
     </script>
