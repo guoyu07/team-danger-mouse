@@ -11,7 +11,7 @@
 - Start the sonic-pi server (on OSX run `ruby /Applications/Sonic Pi.app/app/server/bin/sonic-pi-server.rb`)
 - Start the bridge: `ruby bridge.rb`
 
-Send `client-do` events to app `cfbbdd53d88cd46a7deb` in MT1 in the channel `presence-music` where the data
+Send `client-do` events to app `30bde1096db2be8e7f53` in MT1 in the channel `presence-music` where the data
 is a list of commands. The `client-full_stop` event stops synthesis.
 
 Commands are:

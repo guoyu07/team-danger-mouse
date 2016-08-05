@@ -7,9 +7,9 @@ app = Flask(__name__)
 CORS(app)
 
 pusher_client = pusher.Pusher(
-    app_id='232560',
-    key='cfbbdd53d88cd46a7deb',
-    secret='b4430e80c82bc1b8b729',
+    app_id='233024',
+    key='30bde1096db2be8e7f53',
+    secret='f97bdb6a86e395f59110',
 )
 
 @app.route("/dangermouse/", methods=["POST"])
