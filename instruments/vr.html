@@ -23,12 +23,13 @@
 
         </a-entity>
 
-      <a-sphere position="4 1.25 -3" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-sphere position="5 2.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-sphere position="3 4.25 10" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-sphere position="8 3.25 -10" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-sphere position="8 4.25 4" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-sphere position="9 8.25 2.5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="a4" position="4 1.25 -3" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="c4" position="5 2.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="d4" position="3 4.25 10" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="e4" position="8 3.25 -10" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="f4" position="8 4.25 4" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="g4" position="9 8.25 2.5" radius="1.25" color="#EF2D5E"></a-sphere>
+      <a-sphere data-key="g4" position="9 8.25 2.5" radius="1.25" color="#EF2D5E"></a-sphere>
 
       <!-- https://www.flickr.com/photos/vitroids/3033329561/in/photolist-Gj57k-5C3Bcx-jk1Byv-36uUj9-52ftoS-7rStBS -->
       <a-sky src="vrsky.jpg" rotation="0 -130 0"></a-sky>
@@ -43,26 +44,12 @@
 
       var channel = pusher.subscribe('presence-music')
 
-
-
-      var notes = ["c4", "g4", "a4", "f4", "e4", "d4"]
-      var current_note = 'c4'
-
-      ;[].forEach.call(document.querySelectorAll('a-sphere'), function(sphere, i){
+      ;[].forEach.call(document.querySelectorAll('a-sphere'), function(sphere){
         sphere.addEventListener('click', function(){
-          console.log("click", sphere, i)
-          current_note = notes[i]
-
-          channel.trigger('client-do', [
-            {play: ':' + notes[i]}
-          ])
+          console.log("click", sphere, sphere.dataset.key)
+          channel.trigger('client-do', [{play: ':' + sphere.dataset.key}])
         }, false)
-        // console.log("ok", sphere)
       });
-      //
-      // window.addEventListener('click', function(e){
-      //   console.log("CLIC")
-      // }, false)
     </script>
   </body>
 </html>
