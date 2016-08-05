@@ -12,7 +12,7 @@ pusher_client = pusher.Pusher(
     secret='f97bdb6a86e395f59110',
 )
 
-@app.route("/dangermouse/", methods=["POST"])
+@app.route("/dangermouse/auth", methods=["POST"])
 def pusher_auth():
   auth = pusher_client.authenticate(
     channel=request.form['channel_name'],

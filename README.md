@@ -2,7 +2,7 @@
 
 ## auth
 
-- Use https://www.barrucadu.co.uk/dangermouse/ as the auth end point
+- Use https://www.barrucadu.co.uk/dangermouse/auth as the auth end point
 
 ## bridge
 
