@@ -1,10 +1,18 @@
 # team-danger-mouse
 
-## auth
+## Set-up
 
-- Use https://www.barrucadu.co.uk/dangermouse/auth as the auth end point
+- Create an app and enable client events.
+- Set the app credentials and auth endpoint in `bridge.rb`, `auth.py`, and the instruments (there are placeholders).
 
-## bridge
+## Running
+
+### auth
+
+- Install some packages: `pip install flask flask-cors pusher`
+- Start the server: `python auth.py`
+
+### bridge
 
 - Install some gems: `gem install pusher-client sonic-pi-cli`
 - Get sonic-pi: http://sonic-pi.net/
@@ -29,3 +37,6 @@ Commands are:
 Any command can be given a `repeat` parameter, which can be `"forever"` or an int. All commands other than
 `sleep` and `raw` can be given an `amp` parameter: 0 is silent, 1 is normal volume; `synth`, `effect`, and
 `progn` pass on the `amp` to its subcommands (although if they have an `amp` of their own it takes precedence).
+
+**Warning:** The `raw` command allows arbitrary code execution on the machine running Sonic Pi! You probably
+shouldn't expose that to the public Internet.
