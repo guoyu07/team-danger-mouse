@@ -7,9 +7,9 @@ app = Flask(__name__)
 CORS(app)
 
 pusher_client = pusher.Pusher(
-    app_id='233024',
-    key='30bde1096db2be8e7f53',
-    secret='f97bdb6a86e395f59110',
+    app_id='app id',
+    key='app key',
+    secret='app secret',
 )
 
 @app.route("/dangermouse/auth", methods=["POST"])

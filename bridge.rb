@@ -56,8 +56,8 @@ app = SonicPi.new
 
 app.test_connection!
 
-socket = PusherClient::Socket.new('30bde1096db2be8e7f53',{
-  :secret => 'f97bdb6a86e395f59110'
+socket = PusherClient::Socket.new('app key',{
+  :secret => 'app secret'
 })
 
 socket.subscribe('presence-music', :user_id => 'the.server', :user_data => {:foo => 'bar'})
